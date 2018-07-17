@@ -28,15 +28,13 @@ namespace ZendeskImporter
             {
                 Console.WriteLine($"Getting tickets after {offSet.UtcDateTime:u}");
                 var newTickets = _client.Tickets.GetIncrementalTicketExport(offSet);
-
+                tickets.AddRange(newTickets.Tickets.Where(t => !ticketIds.Contains(t.Id.Value)));
+                ticketIds.UnionWith(newTickets.Tickets.Select(t => t.Id.Value));
+                offSet = newTickets.EndTime;
                 if (newTickets.Tickets.Count != 1000)
                 {
                     return tickets;
                 }
-
-                tickets.AddRange(newTickets.Tickets.Where(t => !ticketIds.Contains(t.Id.Value)));
-                ticketIds.UnionWith(newTickets.Tickets.Select(t => t.Id.Value));
-                offSet = newTickets.EndTime;
             }
         }
     }
