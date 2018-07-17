@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace ZendeskImporter
+﻿namespace ZendeskImporter
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var api = new ZendeskRetriever();
+            api.GetAllTickets();
         }
     }
 }
