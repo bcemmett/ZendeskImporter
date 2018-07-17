@@ -52,7 +52,10 @@ CREATE TABLE [dbo].[Tickets]
 [ViaSourceToFormattedphone] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [ViaSourceToPhone] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [ViaSourceRel] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
-[ViaFollowupSourceId] [bigint] NULL
+[ViaFollowupSourceId] [bigint] NULL,
+[ForumTopicId] [bigint] NULL,
+[ProblemId] [bigint] NULL,
+[ExternalId] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Tickets] ADD CONSTRAINT [PK_Tickets] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
