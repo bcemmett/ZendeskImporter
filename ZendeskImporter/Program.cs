@@ -14,6 +14,8 @@ namespace ZendeskImporter
                 persister.SaveTicket(ticket);
                 var comments = api.GetComments(ticket.Id.Value);
                 persister.SaveTicketComments(ticket.Id.Value, comments);
+                var metrics = api.GetTicketMetrics(ticket.Id.Value);
+                persister.SaveTicketMetrics(ticket.Id.Value, metrics);
             }
 
             Console.WriteLine("done");

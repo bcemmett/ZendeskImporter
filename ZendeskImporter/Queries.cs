@@ -165,5 +165,65 @@ INSERT INTO dbo.TicketComments (
     @CreatedAt
 )
 ";
+
+        public const string InsertTicketMetrics = @"
+INSERT INTO dbo.TicketMetrics ( 
+    AgentWaitTimeInMinutesBusiness ,
+    AgentWaitTimeInMinutesCalendar ,
+    AssignedAt ,
+    AssigneeStations ,
+    AssigneeUpdatedAt ,
+    CreatedAt ,
+    FirstResolutionTimeInMinutesBusiness ,
+    FirstResolutionTimeInMinutesCalendar ,
+    FullResolutionTimeInMinutesBusiness ,
+    FullResolutionTimeInMinutesCalendar ,
+    GroupStations ,
+    Id ,
+    InitiallyAssignedAt ,
+    LastCommentAddedAt ,
+    OnHoldTimeInMinutesBusiness ,
+    OnHoldTimeInMinutesCalendar ,
+    Reopens ,
+    Replies ,
+    ReplyTimeInMinutesBusiness ,
+    ReplyTimeInMinutesCalendar ,
+    RequesterUpdatedAt ,
+    RequesterWaitTimeInMinutesBusiness ,
+    RequesterWaitTimeInMinutesCalendar ,
+    SolvedAt ,
+    StatusUpdatedAt ,
+    TicketId ,
+    UpdatedAt
+) VALUES (
+    @AgentWaitTimeInMinutesBusiness ,
+    @AgentWaitTimeInMinutesCalendar ,
+    @AssignedAt ,
+    @AssigneeStations ,
+    @AssigneeUpdatedAt ,
+    @CreatedAt ,
+    @FirstResolutionTimeInMinutesBusiness ,
+    @FirstResolutionTimeInMinutesCalendar ,
+    @FullResolutionTimeInMinutesBusiness ,
+    @FullResolutionTimeInMinutesCalendar ,
+    @GroupStations ,
+    @Id ,
+    @InitiallyAssignedAt ,
+    @LastCommentAddedAt ,
+    @OnHoldTimeInMinutesBusiness ,
+    @OnHoldTimeInMinutesCalendar ,
+    @Reopens ,
+    @Replies ,
+    @ReplyTimeInMinutesBusiness ,
+    @ReplyTimeInMinutesCalendar ,
+    @RequesterUpdatedAt ,
+    @RequesterWaitTimeInMinutesBusiness ,
+    @RequesterWaitTimeInMinutesCalendar ,
+    @SolvedAt ,
+    @StatusUpdatedAt ,
+    @TicketId ,
+    @UpdatedAt
+)
+";
     }
 }

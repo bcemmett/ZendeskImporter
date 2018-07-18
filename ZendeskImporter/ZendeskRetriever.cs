@@ -43,5 +43,11 @@ namespace ZendeskImporter
             var comments = _client.Tickets.GetTicketComments(ticketId);
             return comments.Comments;
         }
+
+        public TicketMetric GetTicketMetrics(long ticketId)
+        {
+            var metrics = _client.Tickets.GetTicketMetricsForTicket(ticketId);
+            return metrics.TicketMetric;
+        }
     }
 }

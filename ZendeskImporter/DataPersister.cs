@@ -121,6 +121,39 @@ namespace ZendeskImporter
             RunQuery(Queries.InsertTicket, parameters);
         }
 
+        public void SaveTicketMetrics(long ticketId, TicketMetric metrics)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@AgentWaitTimeInMinutesBusiness", (object)metrics.AgentWaitTimeInMinutes?.Business ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@AgentWaitTimeInMinutesCalendar", (object)metrics.AgentWaitTimeInMinutes?.Calendar ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@AssignedAt", (object)metrics.AssignedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@AssigneeStations", (object)metrics.AssigneeStations ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@AssigneeUpdatedAt", (object)metrics.AssigneeUpdatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@CreatedAt", (object)metrics.CreatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@FirstResolutionTimeInMinutesBusiness", (object)metrics.FirstResolutionTimeInMinutes?.Business ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@FirstResolutionTimeInMinutesCalendar", (object)metrics.FirstResolutionTimeInMinutes?.Calendar ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@FullResolutionTimeInMinutesBusiness", (object)metrics.FullResolutionTimeInMinutes?.Business ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@FullResolutionTimeInMinutesCalendar", (object)metrics.FullResolutionTimeInMinutes?.Calendar ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@GroupStations", (object)metrics.GroupStations ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Id", metrics.Id));
+            parameters.Add(new SqlParameter("@InitiallyAssignedAt", (object)metrics.InitiallyAssignedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@LastCommentAddedAt", (object)metrics.LatestCommentAddedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@OnHoldTimeInMinutesBusiness", (object)metrics.OnHoldTimeInMinutes?.Business ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@OnHoldTimeInMinutesCalendar", (object)metrics.OnHoldTimeInMinutes?.Calendar ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Reopens", (object)metrics.Reopens ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Replies", (object)metrics.Replies ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ReplyTimeInMinutesBusiness", (object)metrics.ReplyTimeInMinutes?.Business ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ReplyTimeInMinutesCalendar", (object)metrics.ReplyTimeInMinutes?.Calendar ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@RequesterUpdatedAt", (object)metrics.RequesterUpdatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@RequesterWaitTimeInMinutesBusiness", (object)metrics.RequesterWaitTimeInMinutes?.Business ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@RequesterWaitTimeInMinutesCalendar", (object)metrics.RequesterWaitTimeInMinutes?.Calendar ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@SolvedAt", (object)metrics.SolvedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@StatusUpdatedAt", (object)metrics.StatusUpdatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@TicketId", metrics.TicketId));
+            parameters.Add(new SqlParameter("@UpdatedAt", (object)metrics.UpdatedAt?.DateTime ?? DBNull.Value));
+            RunQuery(Queries.InsertTicketMetrics, parameters);
+        }
+
         public void SaveTicketComments(long ticketId, IList<Comment> comments)
         {
             if (comments == null)
