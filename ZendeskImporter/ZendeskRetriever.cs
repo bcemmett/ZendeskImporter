@@ -38,7 +38,7 @@ namespace ZendeskImporter
             }
         }
 
-        public IList<Comment> GetComments(long ticketId)
+        public IList<Comment> GetTicketComments(long ticketId)
         {
             var comments = _client.Tickets.GetTicketComments(ticketId);
             return comments.Comments;

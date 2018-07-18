@@ -12,7 +12,7 @@ namespace ZendeskImporter
             foreach (var ticket in tickets)
             {
                 persister.SaveTicket(ticket);
-                var comments = api.GetComments(ticket.Id.Value);
+                var comments = api.GetTicketComments(ticket.Id.Value);
                 persister.SaveTicketComments(ticket.Id.Value, comments);
                 var metrics = api.GetTicketMetrics(ticket.Id.Value);
                 persister.SaveTicketMetrics(ticket.Id.Value, metrics);
