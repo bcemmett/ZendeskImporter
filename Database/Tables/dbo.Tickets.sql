@@ -24,7 +24,6 @@ CREATE TABLE [dbo].[Tickets]
 [TicketFormId] [bigint] NULL,
 [Type] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [UpdatedAt] [datetime] NULL,
-[Url] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [ViaChannel] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [ViaSourceFromAddress] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [ViaSourceFromName] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,

@@ -103,7 +103,6 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@TicketFormId", (object)ticket.TicketFormId ?? DBNull.Value));
             parameters.Add(new SqlParameter("@Type", (object)ticket.Type ?? DBNull.Value));
             parameters.Add(new SqlParameter("@UpdatedAt", (object)ticket.UpdatedAt?.DateTime ?? DBNull.Value));
-            parameters.Add(new SqlParameter("@Url", (object)ticket.Url ?? DBNull.Value));
             parameters.Add(new SqlParameter("@ViaChannel", (object)ticket.Via?.Channel ?? DBNull.Value));
             parameters.Add(new SqlParameter("@ViaSourceFromAddress", (object)ticket.Via?.Source?.From?.Address ?? DBNull.Value));
             parameters.Add(new SqlParameter("@ViaSourceFromName", (object)ticket.Via?.Source?.From?.Name ?? DBNull.Value));
