@@ -42,8 +42,8 @@ INSERT INTO dbo.Tickets (
     ViaFollowupSourceId ,
     ForumTopicId ,
     ProblemId ,
-    ExternalId )
-VALUES (
+    ExternalId
+) VALUES (
     @AssigneeId ,
     @BrandId ,
     @CreatedAt ,
@@ -83,6 +83,38 @@ VALUES (
     @ForumTopicId ,
     @ProblemId ,
     @ExternalId
+)
+";
+
+        public const string InsertTicketTag = @"
+INSERT INTO dbo.TicketTags (
+    TicketId ,
+    Tag
+) VALUES (
+    @TicketId ,
+    @Tag
+)
+";
+
+        public const string InsertTicketCollaborator = @"
+INSERT INTO dbo.TicketCollaborators (
+    TicketId ,
+    CollaboratorId
+) VALUES (
+    @TicketId ,
+    @CollaboratorId
+)
+";
+
+        public const string InsertTicketCustomField = @"
+INSERT INTO dbo.TicketCustomFields (
+    TicketId ,
+    CustomFieldId ,
+    Value
+) VALUES (
+    @TicketId ,
+    @CustomFieldId ,
+    @Value
 )
 ";
     }

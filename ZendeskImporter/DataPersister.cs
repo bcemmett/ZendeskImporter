@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using ZendeskApi_v2.Models.Tickets;
 
@@ -13,7 +12,71 @@ namespace ZendeskImporter
             foreach (var ticket in tickets)
             {
                 SaveTicket(ticket);
+                SaveTicketTags(ticket.Id.Value, ticket.Tags);
+                SaveTicketCollaborators(ticket.Id.Value, ticket.CollaboratorIds);
+                SaveTicketCustomFields(ticket.Id.Value, ticket.CustomFields);
             }
+        }
+
+        private void SaveTicketCustomFields(long ticketId, IList<CustomField> customFields)
+        {
+            if (customFields == null)
+            {
+                return;
+            }
+            foreach (var customField in customFields)
+            {
+                SaveTicketCustomField(ticketId, customField);
+            }
+        }
+
+        private void SaveTicketCustomField(long ticketId, CustomField customField)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@TicketId", ticketId));
+            parameters.Add(new SqlParameter("@CustomFieldId", customField.Id));
+            parameters.Add(new SqlParameter("@Value", (object)customField.Value?.ToString() ?? DBNull.Value));
+            RunQuery(Queries.InsertTicketCustomField, parameters);
+        }
+
+        private void SaveTicketCollaborators(long ticketId, IList<long> collaborators)
+        {
+            if (collaborators == null)
+            {
+                return;
+            }
+            foreach (var collaborator in collaborators)
+            {
+                SaveTicketCollaborator(ticketId, collaborator);
+            }
+        }
+
+        private void SaveTicketCollaborator(long ticketId, long collaborator)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@TicketId", ticketId));
+            parameters.Add(new SqlParameter("@CollaboratorId", collaborator));
+            RunQuery(Queries.InsertTicketCollaborator, parameters);
+        }
+
+        private void SaveTicketTags(long ticketId, IList<string> tags)
+        {
+            if (tags == null)
+            {
+                return;
+            }
+            foreach (var tag in tags)
+            {
+                SaveTicketTag(ticketId, tag);
+            }
+        }
+
+        private void SaveTicketTag(long ticketId, string tag)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@TicketId", ticketId));
+            parameters.Add(new SqlParameter("@Tag", tag));
+            RunQuery(Queries.InsertTicketTag, parameters);
         }
 
         private void SaveTicket(Ticket ticket)
