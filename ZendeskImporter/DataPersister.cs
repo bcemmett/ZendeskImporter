@@ -7,15 +7,12 @@ namespace ZendeskImporter
 {
     class DataPersister
     {
-        public void SaveTickets(List<Ticket> tickets)
+        public void SaveTicket(Ticket ticket)
         {
-            foreach (var ticket in tickets)
-            {
-                SaveTicket(ticket);
-                SaveTicketTags(ticket.Id.Value, ticket.Tags);
-                SaveTicketCollaborators(ticket.Id.Value, ticket.CollaboratorIds);
-                SaveTicketCustomFields(ticket.Id.Value, ticket.CustomFields);
-            }
+            SaveRootTicket(ticket);
+            SaveTicketTags(ticket.Id.Value, ticket.Tags);
+            SaveTicketCollaborators(ticket.Id.Value, ticket.CollaboratorIds);
+            SaveTicketCustomFields(ticket.Id.Value, ticket.CustomFields);
         }
 
         private void SaveTicketCustomFields(long ticketId, IList<CustomField> customFields)
@@ -79,7 +76,7 @@ namespace ZendeskImporter
             RunQuery(Queries.InsertTicketTag, parameters);
         }
 
-        private void SaveTicket(Ticket ticket)
+        private void SaveRootTicket(Ticket ticket)
         {
             var parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@AssigneeId", (object)ticket.AssigneeId ?? DBNull.Value));
@@ -122,6 +119,45 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@ProblemId", (object)ticket.ProblemId ?? DBNull.Value));
             parameters.Add(new SqlParameter("@ExternalId", (object)ticket.ExternalId?.ToString() ?? DBNull.Value));
             RunQuery(Queries.InsertTicket, parameters);
+        }
+
+        public void SaveTicketComments(long ticketId, IList<Comment> comments)
+        {
+            if (comments == null)
+            {
+                return;
+            }
+            foreach (var comment in comments)
+            {
+                SaveTicketComment(ticketId, comment);
+            }
+        }
+
+        private void SaveTicketComment(long ticketId, Comment comment)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@TicketId", ticketId));
+            parameters.Add(new SqlParameter("@Id", comment.Id));
+            parameters.Add(new SqlParameter("@Type", (object)comment.Type ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Body", (object)comment.Body ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@HtmlBody", (object)comment.HtmlBody ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@PlainBody", (object)comment.PlainBody ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Public", (object)comment.Public ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@AuthorId", (object)comment.AuthorId ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaChannel", (object)comment.Via?.Channel ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceFromAddress", (object)comment.Via?.Source?.From?.Address ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceFromName", (object)comment.Via?.Source?.From?.Name ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceFromFormattedPhone", (object)comment.Via?.Source?.From?.FormattedPhone ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceFromPhone", (object)comment.Via?.Source?.From?.Phone ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceToAddress", (object)comment.Via?.Source?.To?.Address ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceToName", (object)comment.Via?.Source?.To?.Name ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceToFormattedPhone", (object)comment.Via?.Source?.To?.FormattedPhone ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceToPhone", (object)comment.Via?.Source?.To?.Phone ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ViaSourceRel", (object)comment.Via?.Source?.Rel ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@MetaDataCustomTimeSpent", (object)comment.MetaData?.Custom?.TimeSpent ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@MetaDataSystemIpAddress", (object)comment.MetaData?.System?.IpAddress ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@CreatedAt", (object)comment.CreatedAt?.DateTime ?? DBNull.Value));
+            RunQuery(Queries.InsertTicketComment, parameters);
         }
 
         private void RunQuery(string query, List<SqlParameter> parameters)

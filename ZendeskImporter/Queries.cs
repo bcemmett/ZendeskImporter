@@ -117,5 +117,53 @@ INSERT INTO dbo.TicketCustomFields (
     @Value
 )
 ";
+
+        public const string InsertTicketComment = @"
+INSERT INTO dbo.TicketComments ( 
+    TicketId ,
+    Id ,
+    Type ,
+    Body ,
+    HtmlBody ,
+    PlainBody ,
+    [Public] ,
+    AuthorId ,
+    ViaChannel ,
+    ViaSourceFromAddress ,
+    ViaSourceFromName ,
+    ViaSourceFromFormattedPhone ,
+    ViaSourceFromPhone ,
+    ViaSourceToAddress ,
+    ViaSourceToName ,
+    ViaSourceToFormattedPhone ,
+    ViaSourceToPhone ,
+    ViaSourceRel ,
+    MetaDataCustomTimeSpent ,
+    MetaDataSystemIpAddress ,
+    CreatedAt
+) VALUES (
+    @TicketId ,
+    @Id ,
+    @Type ,
+    @Body ,
+    @HtmlBody ,
+    @PlainBody ,
+    @Public ,
+    @AuthorId ,
+    @ViaChannel ,
+    @ViaSourceFromAddress ,
+    @ViaSourceFromName ,
+    @ViaSourceFromFormattedPhone ,
+    @ViaSourceFromPhone ,
+    @ViaSourceToAddress ,
+    @ViaSourceToName ,
+    @ViaSourceToFormattedPhone ,
+    @ViaSourceToPhone ,
+    @ViaSourceRel ,
+    @MetaDataCustomTimeSpent ,
+    @MetaDataSystemIpAddress ,
+    @CreatedAt
+)
+";
     }
 }
