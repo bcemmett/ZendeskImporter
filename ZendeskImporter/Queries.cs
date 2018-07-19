@@ -223,5 +223,84 @@ INSERT INTO dbo.TicketMetrics (
     @UpdatedAt
 )
 ";
+
+        public const string InsertIntoUsers = @"
+INSERT INTO dbo.Users ( 
+    Active ,
+    Alias ,
+    CreatedAt ,
+    CustomRoleId ,
+    Details ,
+    Email ,
+    ExternalId ,
+    Id ,
+    LastLoginAt ,
+    LocaleId ,
+    Moderator ,
+    Name ,
+    Notes ,
+    OnlyPrivateComments ,
+    OrganizationId ,
+    Phone ,
+    RemotePhotoUrl ,
+    Role ,
+    Shared ,
+    Signature ,
+    Suspended ,
+    TicketRestriction ,
+    TimeZone ,
+    UpdatedAt ,
+    Verified 
+) VALUES (
+    @Active ,
+    @Alias ,
+    @CreatedAt ,
+    @CustomRoleId ,
+    @Details ,
+    @Email ,
+    @ExternalId ,
+    @Id ,
+    @LastLoginAt ,
+    @LocaleId ,
+    @Moderator ,
+    @Name ,
+    @Notes ,
+    @OnlyPrivateComments ,
+    @OrganizationId ,
+    @Phone ,
+    @RemotePhotoUrl ,
+    @Role ,
+    @Shared ,
+    @Signature ,
+    @Suspended ,
+    @TicketRestriction ,
+    @TimeZone ,
+    @UpdatedAt ,
+    @Verified
+)
+";
+
+
+        public const string InsertUserTag = @"
+INSERT INTO dbo.UserTags (
+    UserId ,
+    Tag
+) VALUES (
+    @UserId ,
+    @Tag
+)
+";
+
+        public const string InsertUserCustomField = @"
+INSERT INTO dbo.UserCustomFields (
+    UserId ,
+    CustomFieldId ,
+    Value
+) VALUES (
+    @UserId ,
+    @CustomFieldId ,
+    @Value
+)
+";
     }
 }

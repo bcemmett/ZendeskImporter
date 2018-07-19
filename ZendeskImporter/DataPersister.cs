@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using ZendeskApi_v2.Models.Tickets;
+using ZendeskApi_v2.Models.Users;
 
 namespace ZendeskImporter
 {
@@ -190,6 +191,95 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@MetaDataSystemIpAddress", (object)comment.MetaData?.System?.IpAddress ?? DBNull.Value));
             parameters.Add(new SqlParameter("@CreatedAt", (object)comment.CreatedAt?.DateTime ?? DBNull.Value));
             RunQuery(Queries.InsertTicketComment, parameters);
+        }
+
+        public void SaveUsers(List<User> users)
+        {
+            if (users == null)
+            {
+                return;
+            }
+            foreach (var user in users)
+            {
+                SaveUser(user);
+            }
+        }
+
+        private void SaveUser(User user)
+        {
+            SaveRootUser(user);
+        }
+
+        private void SaveRootUser(User user)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@Active", (object)user.Active ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Alias", (object)user.Alias ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@CreatedAt", (object)user.CreatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@CustomRoleId", (object)user.CustomRoleId ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Details", (object)user.Details ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Email", (object)user.Email ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ExternalId", (object)user.ExternalId ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Id", user.Id.Value));
+            parameters.Add(new SqlParameter("@LastLoginAt", (object)user.LastLoginAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@LocaleId", (object)user.LocaleId ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Moderator", (object)user.Moderator ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Name", (object)user.Name ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Notes", (object)user.Notes ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@OnlyPrivateComments", (object)user.OnlyPrivateComments ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@OrganizationId", (object)user.OrganizationId ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Phone", (object)user.Phone ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@RemotePhotoUrl", (object)user.RemotePhotoUrl ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Role", (object)user.Role ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Shared", (object)user.Shared ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Signature", (object)user.Signature ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Suspended", (object)user.Suspended ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@TicketRestriction", (object)user.TicketRestriction ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@TimeZone", (object)user.TimeZone ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@UpdatedAt", (object)user.UpdatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Verified", (object)user.Verified ?? DBNull.Value));
+            RunQuery(Queries.InsertIntoUsers, parameters);
+        }
+
+        private void SaveUserTags(long userId, IList<string> tags)
+        {
+            if (tags == null)
+            {
+                return;
+            }
+            foreach (var tag in tags)
+            {
+                SaveUserTag(userId, tag);
+            }
+        }
+
+        private void SaveUserTag(long userId, string tag)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UserId", userId));
+            parameters.Add(new SqlParameter("@Tag", tag));
+            RunQuery(Queries.InsertUserTag, parameters);
+        }
+
+        private void SaveUserCustomFields(long userId, IList<CustomField> customFields)
+        {
+            if (customFields == null)
+            {
+                return;
+            }
+            foreach (var customField in customFields)
+            {
+                SaveUserCustomField(userId, customField);
+            }
+        }
+
+        private void SaveUserCustomField(long userId, CustomField customField)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UserId", userId));
+            parameters.Add(new SqlParameter("@CustomFieldId", customField.Id));
+            parameters.Add(new SqlParameter("@Value", (object)customField.Value?.ToString() ?? DBNull.Value));
+            RunQuery(Queries.InsertUserCustomField, parameters);
         }
 
         private void RunQuery(string query, List<SqlParameter> parameters)

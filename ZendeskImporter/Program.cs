@@ -8,6 +8,7 @@ namespace ZendeskImporter
         {
             var api = new ZendeskRetriever();
             var persister = new DataPersister();
+            
             var tickets = api.GetAllTickets();
             foreach (var ticket in tickets)
             {
@@ -17,6 +18,10 @@ namespace ZendeskImporter
                 var metrics = api.GetTicketMetrics(ticket.Id.Value);
                 persister.SaveTicketMetrics(ticket.Id.Value, metrics);
             }
+
+            var users = api.GetAllUsers();
+            persister.SaveUsers(users);
+
 
             Console.WriteLine("done");
             Console.ReadLine();
