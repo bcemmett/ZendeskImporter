@@ -22,15 +22,22 @@ namespace ZendeskImporter
 
         public List<Ticket> GetAllTickets()
         {
-            var ticketIds = new HashSet<long>();
             var tickets = new List<Ticket>();
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
                 Console.WriteLine($"Getting tickets after {offSet.UtcDateTime:u}");
                 var newTickets = _client.Tickets.GetIncrementalTicketExport(offSet);
-                tickets.AddRange(newTickets.Tickets.Where(t => !ticketIds.Contains(t.Id.Value)));
-                ticketIds.UnionWith(newTickets.Tickets.Select(t => t.Id.Value));
+                foreach (var newTicket in newTickets.Tickets)
+                {
+                    //remove duplicates from the existing list
+                    var itemToRemove = tickets.SingleOrDefault(t => t.Id.Value == newTicket.Id.Value);
+                    if (itemToRemove != null)
+                    {
+                        tickets.Remove(itemToRemove);
+                    }
+                }
+                tickets.AddRange(newTickets.Tickets);
                 offSet = newTickets.EndTime;
                 if (newTickets.Tickets.Count != 1000)
                 {
@@ -41,15 +48,21 @@ namespace ZendeskImporter
 
         public List<User> GetAllUsers()
         {
-            var userIds = new HashSet<long>();
             var users = new List<User>();
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
                 Console.WriteLine($"Getting users after {offSet.UtcDateTime:u}");
                 var newUsers = _client.Users.GetIncrementalUserExport(offSet);
-                users.AddRange(newUsers.Users.Where(u => !userIds.Contains(u.Id.Value)));
-                userIds.UnionWith(newUsers.Users.Select(u => u.Id.Value));
+                foreach (var newUser in newUsers.Users)
+                {
+                    //remove duplicates from the existing list
+                    var itemToRemove = users.SingleOrDefault(u => u.Id.Value == newUser.Id.Value);
+                    if (itemToRemove != null)
+                    {
+                        users.Remove(itemToRemove);
+                    }
+                }
                 offSet = newUsers.EndTime;
                 if (newUsers.Users.Count != 1000)
                 {
