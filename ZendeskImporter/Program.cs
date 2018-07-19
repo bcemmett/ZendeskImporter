@@ -9,6 +9,7 @@ namespace ZendeskImporter
         {
             var api = new ZendeskRetriever();
             var persister = new DataPersister();
+
             var tickets = api.GetAllTickets();
             int totalTickets = tickets.Count;
             int currrentTicket = 0;
@@ -23,7 +24,7 @@ namespace ZendeskImporter
                 try
                 {
                     Console.WriteLine($"Processing ticket {ticket.Id.Value} ({currrentTicket++} of {totalTickets})");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(250);
                     persister.SaveTicket(ticket);
                     var comments = api.GetTicketComments(ticket.Id.Value);
                     persister.SaveTicketComments(ticket.Id.Value, comments);
