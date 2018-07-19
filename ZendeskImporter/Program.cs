@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ZendeskImporter
 {
@@ -13,6 +14,7 @@ namespace ZendeskImporter
             {
                 try
                 {
+                    Thread.Sleep(1000);
                     persister.SaveTicket(ticket);
                     var comments = api.GetTicketComments(ticket.Id.Value);
                     persister.SaveTicketComments(ticket.Id.Value, comments);
