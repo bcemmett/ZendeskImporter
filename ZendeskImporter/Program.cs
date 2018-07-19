@@ -26,10 +26,13 @@ namespace ZendeskImporter
                     Console.WriteLine($"Processing ticket {ticket.Id.Value} ({currrentTicket++} of {totalTickets})");
                     Thread.Sleep(250);
                     persister.SaveTicket(ticket);
-                    var comments = api.GetTicketComments(ticket.Id.Value);
-                    persister.SaveTicketComments(ticket.Id.Value, comments);
-                    var metrics = api.GetTicketMetrics(ticket.Id.Value);
-                    persister.SaveTicketMetrics(ticket.Id.Value, metrics);
+                    if (ticket.Status != "deleted")
+                    {
+                        var comments = api.GetTicketComments(ticket.Id.Value);
+                        persister.SaveTicketComments(ticket.Id.Value, comments);
+                        var metrics = api.GetTicketMetrics(ticket.Id.Value);
+                        persister.SaveTicketMetrics(ticket.Id.Value, metrics);
+                    }
                     failures = 0;
                 }
                 catch (Exception e)
