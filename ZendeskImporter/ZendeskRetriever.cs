@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ZendeskApi_v2;
 using ZendeskApi_v2.Models.Tickets;
 using ZendeskApi_v2.Models.Users;
@@ -26,6 +27,7 @@ namespace ZendeskImporter
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
+                Thread.Sleep(10000);
                 Console.WriteLine($"Getting tickets after {offSet.UtcDateTime:u}");
                 var newTickets = _client.Tickets.GetIncrementalTicketExport(offSet);
                 foreach (var newTicket in newTickets.Tickets)
@@ -52,6 +54,7 @@ namespace ZendeskImporter
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
+                Thread.Sleep(10000);
                 Console.WriteLine($"Getting users after {offSet.UtcDateTime:u}");
                 var newUsers = _client.Users.GetIncrementalUserExport(offSet);
                 foreach (var newUser in newUsers.Users)
