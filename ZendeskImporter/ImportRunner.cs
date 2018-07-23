@@ -55,6 +55,7 @@ namespace ZendeskImporter
                 _persister.DeleteUser(user.Id.Value);
                 _persister.SaveUser(user);
             }
+            _persister.SetHighWatermark(DataPersister.ObjectType.User, finalEndTime);
         }
 
         private void UpdateOrganizations()
@@ -67,6 +68,7 @@ namespace ZendeskImporter
                 _persister.DeleteOrganization(org.Id.Value);
                 _persister.SaveOrganization(org);
             }
+            _persister.SetHighWatermark(DataPersister.ObjectType.Organization, finalEndTime);
         }
     }
 }
