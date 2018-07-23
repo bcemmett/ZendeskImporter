@@ -208,6 +208,8 @@ namespace ZendeskImporter
         private void SaveUser(User user)
         {
             SaveRootUser(user);
+            SaveUserTags(user.Id.Value, user.Tags);
+            SaveUserCustomFields(user.Id.Value, user.CustomFields);
         }
 
         private void SaveRootUser(User user)
@@ -261,7 +263,7 @@ namespace ZendeskImporter
             RunQuery(Queries.InsertUserTag, parameters);
         }
 
-        private void SaveUserCustomFields(long userId, IList<CustomField> customFields)
+        private void SaveUserCustomFields(long userId, IDictionary<string, object> customFields)
         {
             if (customFields == null)
             {
@@ -269,16 +271,16 @@ namespace ZendeskImporter
             }
             foreach (var customField in customFields)
             {
-                SaveUserCustomField(userId, customField);
+                SaveUserCustomField(userId, customField.Key, customField.Value);
             }
         }
 
-        private void SaveUserCustomField(long userId, CustomField customField)
+        private void SaveUserCustomField(long userId, string name, object value)
         {
             var parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@UserId", userId));
-            parameters.Add(new SqlParameter("@CustomFieldId", customField.Id));
-            parameters.Add(new SqlParameter("@Value", (object)customField.Value?.ToString() ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Name", name));
+            parameters.Add(new SqlParameter("@Value", (object)value?.ToString() ?? DBNull.Value));
             RunQuery(Queries.InsertUserCustomField, parameters);
         }
 

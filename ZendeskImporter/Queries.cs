@@ -294,11 +294,11 @@ INSERT INTO dbo.UserTags (
         public const string InsertUserCustomField = @"
 INSERT INTO dbo.UserCustomFields (
     UserId ,
-    CustomFieldId ,
+    Name ,
     Value
 ) VALUES (
     @UserId ,
-    @CustomFieldId ,
+    @Name ,
     @Value
 )
 ";

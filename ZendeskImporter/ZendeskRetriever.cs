@@ -66,6 +66,7 @@ namespace ZendeskImporter
                         users.Remove(itemToRemove);
                     }
                 }
+                users.AddRange(newUsers.Users);
                 offSet = newUsers.EndTime;
                 if (newUsers.Users.Count != 1000)
                 {
