@@ -108,9 +108,28 @@ namespace ZendeskImporter
 
         public IList<Comment> GetTicketComments(long ticketId)
         {
-            var comments = _client.Tickets.GetTicketComments(ticketId);
-            Thread.Sleep(150);
-            return comments.Comments;
+            var comments = new List<Comment>();
+            int page = 1;
+            while (true)
+            {
+                var newComments = _client.Tickets.GetTicketComments(ticketId, null, page);
+                foreach (var newComment in newComments.Comments)
+                {
+                    //remove duplicates from the existing list
+                    var itemToRemove = comments.SingleOrDefault(c => c.Id.Value == newComment.Id.Value);
+                    if (itemToRemove != null)
+                    {
+                        comments.Remove(itemToRemove);
+                    }
+                }
+                comments.AddRange(newComments.Comments);
+                page++;
+                if (newComments.Comments.Count != 100)
+                {
+                    Thread.Sleep(150);
+                    return comments;
+                }
+            }
         }
 
         public TicketMetric GetTicketMetrics(long ticketId)
