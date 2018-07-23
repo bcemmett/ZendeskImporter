@@ -12,3 +12,5 @@ CREATE TABLE [dbo].[Organizations]
 [UpdatedAt] [datetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+ALTER TABLE [dbo].[Organizations] ADD CONSTRAINT [PK_Organizations] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
+GO
