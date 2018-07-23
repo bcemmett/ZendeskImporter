@@ -219,6 +219,8 @@ namespace ZendeskImporter
         private void SaveOrg(Organization org)
         {
             SaveRootOrg(org);
+            SaveOrganizationTags(org.Id.Value, org.Tags);
+            SaveOrganizationCustomFields(org.Id.Value, org.OrganizationFields);
         }
 
         private void SaveRootOrg(Organization org)
@@ -243,6 +245,47 @@ namespace ZendeskImporter
             RunQuery(Queries.InsertOrganization, parameters);
         }
 
+        private void SaveOrganizationTags(long orgId, IList<string> tags)
+        {
+            if (tags == null)
+            {
+                return;
+            }
+            foreach (var tag in tags)
+            {
+                SaveOrganizationTag(orgId, tag);
+            }
+        }
+
+        private void SaveOrganizationTag(long orgId, string tag)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@OrganizationId", orgId));
+            parameters.Add(new SqlParameter("@Tag", tag));
+            RunQuery(Queries.InsertOrganizationTag, parameters);
+        }
+
+        private void SaveOrganizationCustomFields(long orgId, IDictionary<string, object> customFields)
+        {
+            if (customFields == null)
+            {
+                return;
+            }
+            foreach (var customField in customFields)
+            {
+                SaveOrganizationCustomField(orgId, customField.Key, customField.Value);
+            }
+        }
+
+        private void SaveOrganizationCustomField(long orgId, string name, object value)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@OrganizationId", orgId));
+            parameters.Add(new SqlParameter("@Name", name));
+            parameters.Add(new SqlParameter("@Value", (object)value?.ToString() ?? DBNull.Value));
+            RunQuery(Queries.InsertOrganizationCustomField, parameters);
+        }
+        
         public void SaveUsers(List<User> users)
         {
             if (users == null)

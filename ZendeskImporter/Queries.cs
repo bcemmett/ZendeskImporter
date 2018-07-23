@@ -328,5 +328,27 @@ INSERT INTO dbo.Organizations (
     @UpdatedAt
 )
 ";
+
+        public const string InsertOrganizationTag = @"
+INSERT INTO dbo.OrganizationTags (
+    OrganizationId ,
+    Tag
+) VALUES (
+    @OrganizationId ,
+    @Tag
+)
+";
+
+        public const string InsertOrganizationCustomField = @"
+INSERT INTO dbo.OrganizationCustomFields (
+    OrganizationId ,
+    Name ,
+    Value
+) VALUES (
+    @OrganizationId ,
+    @Name ,
+    @Value
+)
+";
     }
 }
