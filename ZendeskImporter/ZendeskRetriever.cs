@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using ZendeskApi_v2;
+using ZendeskApi_v2.Models.Organizations;
 using ZendeskApi_v2.Models.Tickets;
 using ZendeskApi_v2.Models.Users;
 
@@ -57,7 +58,6 @@ namespace ZendeskImporter
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
-                
                 Console.WriteLine($"Getting users after {offSet.UtcDateTime:u}");
                 var newUsers = _client.Users.GetIncrementalUserExport(offSet);
                 foreach (var newUser in newUsers.Users)
@@ -74,6 +74,33 @@ namespace ZendeskImporter
                 if (newUsers.Users.Count != 1000)
                 {
                     return users;
+                }
+                Thread.Sleep(10000);
+            }
+        }
+
+        public List<Organization> GetAllOrganizations()
+        {
+            var orgs = new List<Organization>();
+            var offSet = DateTimeOffset.MinValue;
+            while (true)
+            {
+                Console.WriteLine($"Getting organizations after {offSet.UtcDateTime:u}");
+                var newOrgs = _client.Organizations.GetIncrementalOrganizationExport(offSet);
+                foreach (var newOrg in newOrgs.Organizations)
+                {
+                    //remove duplicates from the existing list
+                    var itemToRemove = orgs.SingleOrDefault(u => u.Id.Value == newOrg.Id.Value);
+                    if (itemToRemove != null)
+                    {
+                        orgs.Remove(itemToRemove);
+                    }
+                }
+                orgs.AddRange(newOrgs.Organizations);
+                offSet = newOrgs.EndTime;
+                if (newOrgs.Organizations.Count != 1000)
+                {
+                    return orgs;
                 }
                 Thread.Sleep(10000);
             }

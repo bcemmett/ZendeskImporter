@@ -17,6 +17,7 @@ namespace ZendeskImporter
         {
             UpdateTickets();
             UpdateUsers();
+            UpdateOrganizations();
             Console.WriteLine("Done");
         }
 
@@ -44,6 +45,11 @@ namespace ZendeskImporter
         {
             var users = _api.GetAllUsers();
             _persister.SaveUsers(users);
+        }
+
+        private void UpdateOrganizations()
+        {
+            var orgs = _api.GetAllOrganizations();
         }
     }
 }
