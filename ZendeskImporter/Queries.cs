@@ -350,5 +350,15 @@ INSERT INTO dbo.OrganizationCustomFields (
     @Value
 )
 ";
+
+        public const string InsertOrganizationDomain = @"
+INSERT INTO dbo.OrganizationDomains (
+    OrganizationId ,
+    Domain
+) VALUES (
+    @OrganizationId ,
+    @Domain
+)
+";
     }
 }

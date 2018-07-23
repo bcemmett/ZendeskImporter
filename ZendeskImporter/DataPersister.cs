@@ -221,6 +221,7 @@ namespace ZendeskImporter
             SaveRootOrg(org);
             SaveOrganizationTags(org.Id.Value, org.Tags);
             SaveOrganizationCustomFields(org.Id.Value, org.OrganizationFields);
+            SaveOrganizationDomains(org.Id.Value, org.DomainNames);
         }
 
         private void SaveRootOrg(Organization org)
@@ -285,7 +286,31 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@Value", (object)value?.ToString() ?? DBNull.Value));
             RunQuery(Queries.InsertOrganizationCustomField, parameters);
         }
-        
+
+        private void SaveOrganizationDomains(long orgId, IList<object> domains)
+        {
+            if (domains == null)
+            {
+                return;
+            }
+            foreach (var domain in domains)
+            {
+                SaveOrganizationDomain(orgId, domain);
+            }
+        }
+
+        private void SaveOrganizationDomain(long orgId, object domain)
+        {
+            if (domain == null)
+            {
+                return;
+            }
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@OrganizationId", orgId));
+            parameters.Add(new SqlParameter("@Domain", domain.ToString()));
+            RunQuery(Queries.InsertOrganizationDomain, parameters);
+        }
+
         public void SaveUsers(List<User> users)
         {
             if (users == null)
