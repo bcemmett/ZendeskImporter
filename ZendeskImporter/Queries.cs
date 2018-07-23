@@ -360,5 +360,14 @@ INSERT INTO dbo.OrganizationDomains (
     @Domain
 )
 ";
+
+        public const string DeleteTicket = @"
+DELETE FROM dbo.Tickets WHERE Id = @TicketId;
+DELETE FROM dbo.TicketTags WHERE TicketId = @TicketId;
+DELETE FROM dbo.TicketMetrics WHERE TicketId = @TicketId;
+DELETE FROM dbo.TicketComments WHERE TicketId = @TicketId;
+DELETE FROM dbo.TicketCollaborators WHERE TicketId = @TicketId;
+DELETE FROM dbo.TicketCustomFields WHERE TicketId = @TicketId;
+";
     }
 }

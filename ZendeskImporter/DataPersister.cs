@@ -409,6 +409,13 @@ namespace ZendeskImporter
             RunQuery(Queries.InsertUserCustomField, parameters);
         }
 
+        public void DeleteTicket(long ticketId)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@TicketId", ticketId));
+            RunQuery(Queries.DeleteTicket, parameters);
+        }
+
         public DateTime GetPreviousHighWatermark(ObjectType objectType)
         {
             using (var conn = new SqlConnection(_connectionString))

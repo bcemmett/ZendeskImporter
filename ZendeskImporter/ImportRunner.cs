@@ -32,6 +32,7 @@ namespace ZendeskImporter
             foreach (var ticket in tickets)
             {
                 Console.WriteLine($"Processing ticket {ticket.Id.Value} ({currrentTicket++} of {tickets.Count})");
+                _persister.DeleteTicket(ticket.Id.Value);
                 _persister.SaveTicket(ticket, ticketCustomFieldLookup);
                 if (ticket.Status != "deleted")
                 {
