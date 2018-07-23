@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace ZendeskImporter
 {
@@ -13,6 +14,7 @@ namespace ZendeskImporter
                 ConfigurationManager.ConnectionStrings["ZendeskImport"].ConnectionString);
 
             runner.Run();
+            Console.ReadLine();
         }
     }
 }

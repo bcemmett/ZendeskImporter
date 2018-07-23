@@ -15,6 +15,13 @@ namespace ZendeskImporter
 
         public void Run()
         {
+            UpdateTickets();
+            UpdateUsers();
+            Console.WriteLine("Done");
+        }
+
+        private void UpdateTickets()
+        {
             var ticketCustomFieldLookup = _api.GetTicketCustomFields();
             var tickets = _api.GetAllTickets();
             int currrentTicket = 1;
@@ -31,12 +38,12 @@ namespace ZendeskImporter
                     _persister.SaveTicketMetrics(ticket.Id.Value, metrics);
                 }
             }
+        }
 
+        private void UpdateUsers()
+        {
             var users = _api.GetAllUsers();
             _persister.SaveUsers(users);
-
-            Console.WriteLine("done");
-            Console.ReadLine();
         }
     }
 }
