@@ -399,6 +399,13 @@ namespace ZendeskImporter
             RunQuery(Queries.DeleteUser, parameters);
         }
 
+        public void DeleteOrganization(long orgId)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@OrganizationId", orgId));
+            RunQuery(Queries.DeleteOrganization, parameters);
+        }
+
         public DateTime GetPreviousHighWatermark(ObjectType objectType)
         {
             using (var conn = new SqlConnection(_connectionString))

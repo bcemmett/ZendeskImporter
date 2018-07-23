@@ -375,5 +375,12 @@ DELETE FROM dbo.Users WHERE Id = @UserId;
 DELETE FROM dbo.UserTags WHERE UserId = @UserId;
 DELETE FROM dbo.UserCustomFields WHERE UserId = @UserId;
 ";
+
+        public const string DeleteOrganization = @"
+DELETE FROM dbo.Organizations WHERE Id = @OrganizationId;
+DELETE FROM dbo.OrganizationTags WHERE OrganizationId = @OrganizationId;
+DELETE FROM dbo.OrganizationCustomFields WHERE OrganizationId = @OrganizationId;
+DELETE FROM dbo.OrganizationDomains WHERE OrganizationId = @OrganizationId;
+";
     }
 }

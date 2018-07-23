@@ -52,6 +52,7 @@ namespace ZendeskImporter
             var users = _api.GetAllUsers(initialStartTime, out finalEndTime);
             foreach (var user in users)
             {
+                _persister.DeleteUser(user.Id.Value);
                 _persister.SaveUser(user);
             }
         }
@@ -63,6 +64,7 @@ namespace ZendeskImporter
             var orgs = _api.GetAllOrganizations(initialStartTime, out finalEndTime);
             foreach (var org in orgs)
             {
+                _persister.DeleteOrganization(org.Id.Value);
                 _persister.SaveOrganization(org);
             }
         }
