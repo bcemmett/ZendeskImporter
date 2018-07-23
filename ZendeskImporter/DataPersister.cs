@@ -250,7 +250,7 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@TimeZone", (object)user.TimeZone ?? DBNull.Value));
             parameters.Add(new SqlParameter("@UpdatedAt", (object)user.UpdatedAt?.DateTime ?? DBNull.Value));
             parameters.Add(new SqlParameter("@Verified", (object)user.Verified ?? DBNull.Value));
-            RunQuery(Queries.InsertIntoUsers, parameters);
+            RunQuery(Queries.InsertUser, parameters);
         }
 
         private void SaveUserTags(long userId, IList<string> tags)

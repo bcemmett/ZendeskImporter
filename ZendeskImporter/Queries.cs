@@ -224,7 +224,7 @@ INSERT INTO dbo.TicketMetrics (
 )
 ";
 
-        public const string InsertIntoUsers = @"
+        public const string InsertUser = @"
 INSERT INTO dbo.Users ( 
     Active ,
     Alias ,
