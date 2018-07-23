@@ -79,14 +79,13 @@ namespace ZendeskImporter
             }
         }
 
-        public List<Organization> GetAllOrganizations()
+        public List<Organization> GetAllOrganizations(DateTime startTime, out DateTime finalEndTime)
         {
             var orgs = new List<Organization>();
-            var offSet = DateTimeOffset.MinValue;
             while (true)
             {
-                Console.WriteLine($"Getting organizations after {offSet.UtcDateTime:u}");
-                var newOrgs = _client.Organizations.GetIncrementalOrganizationExport(offSet);
+                Console.WriteLine($"Getting organizations after {startTime:u}");
+                var newOrgs = _client.Organizations.GetIncrementalOrganizationExport(startTime);
                 foreach (var newOrg in newOrgs.Organizations)
                 {
                     //remove duplicates from the existing list
@@ -97,9 +96,10 @@ namespace ZendeskImporter
                     }
                 }
                 orgs.AddRange(newOrgs.Organizations);
-                offSet = newOrgs.EndTime;
+                startTime = newOrgs.EndTime.UtcDateTime;
                 if (newOrgs.Organizations.Count != 1000)
                 {
+                    finalEndTime = newOrgs.EndTime.UtcDateTime;
                     return orgs;
                 }
                 Thread.Sleep(10000);

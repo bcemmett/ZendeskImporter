@@ -58,8 +58,13 @@ namespace ZendeskImporter
 
         private void UpdateOrganizations()
         {
-            var orgs = _api.GetAllOrganizations();
-            _persister.SaveOrganizations(orgs);
+            var initialStartTime = _persister.GetPreviousHighWatermark(DataPersister.ObjectType.Organization);
+            DateTime finalEndTime;
+            var orgs = _api.GetAllOrganizations(initialStartTime, out finalEndTime);
+            foreach (var org in orgs)
+            {
+                _persister.SaveOrganization(org);
+            }
         }
     }
 }

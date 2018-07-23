@@ -210,28 +210,16 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@CreatedAt", (object)comment.CreatedAt?.DateTime ?? DBNull.Value));
             RunQuery(Queries.InsertTicketComment, parameters);
         }
-
-        public void SaveOrganizations(List<Organization> orgs)
+        
+        public void SaveOrganization(Organization org)
         {
-            if (orgs == null)
-            {
-                return;
-            }
-            foreach (var org in orgs)
-            {
-                SaveOrg(org);
-            }
-        }
-
-        private void SaveOrg(Organization org)
-        {
-            SaveRootOrg(org);
+            SaveRootOrganization(org);
             SaveOrganizationTags(org.Id.Value, org.Tags);
             SaveOrganizationCustomFields(org.Id.Value, org.OrganizationFields);
             SaveOrganizationDomains(org.Id.Value, org.DomainNames);
         }
 
-        private void SaveRootOrg(Organization org)
+        private void SaveRootOrganization(Organization org)
         {
             long? groupId = null;
             if(org.GroupId != null)
