@@ -18,7 +18,7 @@ namespace ZendeskImporter
         {
             var ticketCustomFieldLookup = _api.GetTicketCustomFields();
             var tickets = _api.GetAllTickets();
-            int currrentTicket = 0;
+            int currrentTicket = 1;
 
             foreach (var ticket in tickets)
             {
