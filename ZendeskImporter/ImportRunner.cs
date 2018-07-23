@@ -24,7 +24,9 @@ namespace ZendeskImporter
         private void UpdateTickets()
         {
             var ticketCustomFieldLookup = _api.GetTicketCustomFields();
-            var tickets = _api.GetAllTickets();
+            var initialStartTime = _persister.GetPreviousHighWatermark(DataPersister.ObjectType.Ticket);
+            DateTime finalEndTime;
+            var tickets = _api.GetAllTickets(initialStartTime, out finalEndTime);
             int currrentTicket = 1;
 
             foreach (var ticket in tickets)
@@ -39,6 +41,7 @@ namespace ZendeskImporter
                     _persister.SaveTicketMetrics(ticket.Id.Value, metrics);
                 }
             }
+            _persister.SetHighWatermark(DataPersister.ObjectType.Ticket, finalEndTime);
         }
 
         private void UpdateUsers()

@@ -25,14 +25,13 @@ namespace ZendeskImporter
             return lookup;
         }
 
-        public List<Ticket> GetAllTickets()
+        public List<Ticket> GetAllTickets(DateTime startTime, out DateTime finalEndTime)
         {
             var tickets = new List<Ticket>();
-            var offSet = DateTimeOffset.MinValue;
             while (true)
             {
-                Console.WriteLine($"Getting tickets after {offSet.UtcDateTime:u}");
-                var newTickets = _client.Tickets.GetIncrementalTicketExport(offSet);
+                Console.WriteLine($"Getting tickets after {startTime:u}");
+                var newTickets = _client.Tickets.GetIncrementalTicketExport(startTime);
                 foreach (var newTicket in newTickets.Tickets)
                 {
                     //remove duplicates from the existing list
@@ -43,9 +42,10 @@ namespace ZendeskImporter
                     }
                 }
                 tickets.AddRange(newTickets.Tickets);
-                offSet = newTickets.EndTime;
+                startTime = newTickets.EndTime;
                 if (newTickets.Tickets.Count != 1000)
                 {
+                    finalEndTime = newTickets.EndTime;
                     return tickets;
                 }
                 Thread.Sleep(10000);
