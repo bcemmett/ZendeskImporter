@@ -107,11 +107,11 @@ INSERT INTO dbo.TicketCollaborators (
         public const string InsertTicketCustomField = @"
 INSERT INTO dbo.TicketCustomFields (
     TicketId ,
-    CustomFieldId ,
+    Name ,
     Value
 ) VALUES (
     @TicketId ,
-    @CustomFieldId ,
+    @Name ,
     @Value
 )
 ";

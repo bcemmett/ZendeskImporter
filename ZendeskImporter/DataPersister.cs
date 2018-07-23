@@ -8,15 +8,15 @@ namespace ZendeskImporter
 {
     class DataPersister
     {
-        public void SaveTicket(Ticket ticket)
+        public void SaveTicket(Ticket ticket, Dictionary<long, string> ticketCustomFieldLookup)
         {
             SaveRootTicket(ticket);
             SaveTicketTags(ticket.Id.Value, ticket.Tags);
             SaveTicketCollaborators(ticket.Id.Value, ticket.CollaboratorIds);
-            SaveTicketCustomFields(ticket.Id.Value, ticket.CustomFields);
+            SaveTicketCustomFields(ticket.Id.Value, ticket.CustomFields, ticketCustomFieldLookup);
         }
 
-        private void SaveTicketCustomFields(long ticketId, IList<CustomField> customFields)
+        private void SaveTicketCustomFields(long ticketId, IList<CustomField> customFields, Dictionary<long, string> ticketCustomFieldLookup)
         {
             if (customFields == null)
             {
@@ -24,16 +24,19 @@ namespace ZendeskImporter
             }
             foreach (var customField in customFields)
             {
-                SaveTicketCustomField(ticketId, customField);
+                var name = ticketCustomFieldLookup.ContainsKey(customField.Id)
+                    ? ticketCustomFieldLookup[customField.Id]
+                    : customField.Id.ToString();
+                SaveTicketCustomField(ticketId, name, customField.Value);
             }
         }
 
-        private void SaveTicketCustomField(long ticketId, CustomField customField)
+        private void SaveTicketCustomField(long ticketId, string name, object value)
         {
             var parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TicketId", ticketId));
-            parameters.Add(new SqlParameter("@CustomFieldId", customField.Id));
-            parameters.Add(new SqlParameter("@Value", (object)customField.Value?.ToString() ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Name", name));
+            parameters.Add(new SqlParameter("@Value", (object)value?.ToString() ?? DBNull.Value));
             RunQuery(Queries.InsertTicketCustomField, parameters);
         }
 

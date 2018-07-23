@@ -21,6 +21,13 @@ namespace ZendeskImporter
                 String.Empty);
         }
 
+        public Dictionary<long, string> GetTicketCustomFields()
+        {
+            var fields = _client.Tickets.GetTicketFields();
+            var lookup = fields.TicketFields.ToDictionary(t => t.Id.Value, t => t.Title);
+            return lookup;
+        }
+
         public List<Ticket> GetAllTickets()
         {
             var tickets = new List<Ticket>();
