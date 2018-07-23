@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using ZendeskApi_v2.Models.Organizations;
 using ZendeskApi_v2.Models.Tickets;
 using ZendeskApi_v2.Models.Users;
 
@@ -201,6 +202,45 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@MetaDataSystemIpAddress", (object)comment.MetaData?.System?.IpAddress ?? DBNull.Value));
             parameters.Add(new SqlParameter("@CreatedAt", (object)comment.CreatedAt?.DateTime ?? DBNull.Value));
             RunQuery(Queries.InsertTicketComment, parameters);
+        }
+
+        public void SaveOrganizations(List<Organization> orgs)
+        {
+            if (orgs == null)
+            {
+                return;
+            }
+            foreach (var org in orgs)
+            {
+                SaveOrg(org);
+            }
+        }
+
+        private void SaveOrg(Organization org)
+        {
+            SaveRootOrg(org);
+        }
+
+        private void SaveRootOrg(Organization org)
+        {
+            long? groupId = null;
+            if(org.GroupId != null)
+            {
+                groupId = Int64.Parse(org.GroupId.ToString());
+            };
+
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@CreatedAt", (object)org.CreatedAt?.DateTime ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Details", (object)org.Details?.ToString() ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@ExternalId", (object)org.ExternalId?.ToString() ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@GroupId", (object)groupId ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Id", org.Id.Value));
+            parameters.Add(new SqlParameter("@Name", (object)org.Name ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@Notes", (object)org.Notes?.ToString() ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@SharedComments", (object)org.SharedComments ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@SharedTickets", (object)org.SharedTickets ?? DBNull.Value));
+            parameters.Add(new SqlParameter("@UpdatedAt", (object)org.UpdatedAt?.DateTime ?? DBNull.Value));
+            RunQuery(Queries.InsertOrganization, parameters);
         }
 
         public void SaveUsers(List<User> users)

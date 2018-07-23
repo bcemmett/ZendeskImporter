@@ -50,6 +50,7 @@ namespace ZendeskImporter
         private void UpdateOrganizations()
         {
             var orgs = _api.GetAllOrganizations();
+            _persister.SaveOrganizations(orgs);
         }
     }
 }

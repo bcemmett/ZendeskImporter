@@ -302,5 +302,31 @@ INSERT INTO dbo.UserCustomFields (
     @Value
 )
 ";
+
+        public const string InsertOrganization = @"
+INSERT INTO dbo.Organizations ( 
+    CreatedAt ,
+    Details ,
+    ExternalId ,
+    GroupId ,
+    Id ,
+    Name ,
+    Notes ,
+    SharedComments ,
+    SharedTickets ,
+    UpdatedAt
+) VALUES (
+    @CreatedAt ,
+    @Details ,
+    @ExternalId ,
+    @GroupId ,
+    @Id ,
+    @Name ,
+    @Notes ,
+    @SharedComments ,
+    @SharedTickets ,
+    @UpdatedAt
+)
+";
     }
 }
