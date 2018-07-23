@@ -52,14 +52,13 @@ namespace ZendeskImporter
             }
         }
 
-        public List<User> GetAllUsers()
+        public List<User> GetAllUsers(DateTime startTime, out DateTime finalEndTime)
         {
             var users = new List<User>();
-            var offSet = DateTimeOffset.MinValue;
             while (true)
             {
-                Console.WriteLine($"Getting users after {offSet.UtcDateTime:u}");
-                var newUsers = _client.Users.GetIncrementalUserExport(offSet);
+                Console.WriteLine($"Getting users after {startTime:u}");
+                var newUsers = _client.Users.GetIncrementalUserExport(startTime);
                 foreach (var newUser in newUsers.Users)
                 {
                     //remove duplicates from the existing list
@@ -70,9 +69,10 @@ namespace ZendeskImporter
                     }
                 }
                 users.AddRange(newUsers.Users);
-                offSet = newUsers.EndTime;
+                startTime = newUsers.EndTime.UtcDateTime;
                 if (newUsers.Users.Count != 1000)
                 {
+                    finalEndTime = newUsers.EndTime.UtcDateTime;
                     return users;
                 }
                 Thread.Sleep(10000);

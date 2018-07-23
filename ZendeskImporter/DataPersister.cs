@@ -318,19 +318,7 @@ namespace ZendeskImporter
             RunQuery(Queries.InsertOrganizationDomain, parameters);
         }
 
-        public void SaveUsers(List<User> users)
-        {
-            if (users == null)
-            {
-                return;
-            }
-            foreach (var user in users)
-            {
-                SaveUser(user);
-            }
-        }
-
-        private void SaveUser(User user)
+        public void SaveUser(User user)
         {
             SaveRootUser(user);
             SaveUserTags(user.Id.Value, user.Tags);
@@ -414,6 +402,13 @@ namespace ZendeskImporter
             var parameters = new List<SqlParameter>();
             parameters.Add(new SqlParameter("@TicketId", ticketId));
             RunQuery(Queries.DeleteTicket, parameters);
+        }
+
+        public void DeleteUser(long userId)
+        {
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@UserId", userId));
+            RunQuery(Queries.DeleteUser, parameters);
         }
 
         public DateTime GetPreviousHighWatermark(ObjectType objectType)

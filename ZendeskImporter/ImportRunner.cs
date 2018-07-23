@@ -47,8 +47,13 @@ namespace ZendeskImporter
 
         private void UpdateUsers()
         {
-            var users = _api.GetAllUsers();
-            _persister.SaveUsers(users);
+            var initialStartTime = _persister.GetPreviousHighWatermark(DataPersister.ObjectType.User);
+            DateTime finalEndTime;
+            var users = _api.GetAllUsers(initialStartTime, out finalEndTime);
+            foreach (var user in users)
+            {
+                _persister.SaveUser(user);
+            }
         }
 
         private void UpdateOrganizations()

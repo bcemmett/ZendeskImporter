@@ -369,5 +369,11 @@ DELETE FROM dbo.TicketComments WHERE TicketId = @TicketId;
 DELETE FROM dbo.TicketCollaborators WHERE TicketId = @TicketId;
 DELETE FROM dbo.TicketCustomFields WHERE TicketId = @TicketId;
 ";
+
+        public const string DeleteUser = @"
+DELETE FROM dbo.Users WHERE Id = @UserId;
+DELETE FROM dbo.UserTags WHERE UserId = @UserId;
+DELETE FROM dbo.UserCustomFields WHERE UserId = @UserId;
+";
     }
 }
