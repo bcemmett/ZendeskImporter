@@ -8,10 +8,10 @@ namespace ZendeskImporter
         private readonly ZendeskRetriever _api;
         private readonly DataPersister _persister;
         
-        public ImportRunner(string zendeskUrl, string zendeskUser, string zendeskToken)
+        public ImportRunner(string zendeskUrl, string zendeskUser, string zendeskToken, string dbConnectionString)
         {
             _api = new ZendeskRetriever(zendeskUrl, zendeskUser, zendeskToken);
-            _persister = new DataPersister();
+            _persister = new DataPersister(dbConnectionString);
         }
 
         public void Run()

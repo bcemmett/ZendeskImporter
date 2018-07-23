@@ -8,6 +8,13 @@ namespace ZendeskImporter
 {
     class DataPersister
     {
+        private readonly string _connectionString;
+
+        public DataPersister(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public void SaveTicket(Ticket ticket, Dictionary<long, string> ticketCustomFieldLookup)
         {
             SaveRootTicket(ticket);
@@ -289,7 +296,7 @@ namespace ZendeskImporter
 
         private void RunQuery(string query, List<SqlParameter> parameters)
         {
-            using (var conn = new SqlConnection("Data Source=.;Initial Catalog=Zendesk;Integrated Security=true;"))
+            using (var conn = new SqlConnection(_connectionString))
             {
                 using (var cmd = new SqlCommand(query, conn))
                 {

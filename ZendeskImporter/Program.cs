@@ -9,7 +9,8 @@ namespace ZendeskImporter
             var runner = new ImportRunner(
                 ConfigurationManager.AppSettings["ZendeskUrl"],
                 ConfigurationManager.AppSettings["ZendeskUser"],
-                ConfigurationManager.AppSettings["ZendeskToken"]);
+                ConfigurationManager.AppSettings["ZendeskToken"],
+                ConfigurationManager.ConnectionStrings["ZendeskImport"].ConnectionString);
 
             runner.Run();
         }
