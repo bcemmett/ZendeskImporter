@@ -12,13 +12,9 @@ namespace ZendeskImporter
     {
         private readonly ZendeskApi _client;
 
-        public ZendeskRetriever()
+        public ZendeskRetriever(string zendeskUrl, string zendeskUser, string zendeskToken)
         {
-            _client = new ZendeskApi(
-                "XXXXX",
-                "YYYYY",
-                "ZZZZZ",
-                String.Empty);
+            _client = new ZendeskApi(zendeskUrl, zendeskUser, zendeskToken, String.Empty);
         }
 
         public Dictionary<long, string> GetTicketCustomFields()
