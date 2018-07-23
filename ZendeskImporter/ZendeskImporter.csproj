@@ -9,4 +9,14 @@
     <PackageReference Include="ZendeskApi_v2" Version="3.8.1-alpha11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
