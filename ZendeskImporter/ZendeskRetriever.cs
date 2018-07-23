@@ -30,7 +30,6 @@ namespace ZendeskImporter
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
-                Thread.Sleep(10000);
                 Console.WriteLine($"Getting tickets after {offSet.UtcDateTime:u}");
                 var newTickets = _client.Tickets.GetIncrementalTicketExport(offSet);
                 foreach (var newTicket in newTickets.Tickets)
@@ -48,6 +47,7 @@ namespace ZendeskImporter
                 {
                     return tickets;
                 }
+                Thread.Sleep(10000);
             }
         }
 
@@ -57,7 +57,7 @@ namespace ZendeskImporter
             var offSet = DateTimeOffset.MinValue;
             while (true)
             {
-                Thread.Sleep(10000);
+                
                 Console.WriteLine($"Getting users after {offSet.UtcDateTime:u}");
                 var newUsers = _client.Users.GetIncrementalUserExport(offSet);
                 foreach (var newUser in newUsers.Users)
@@ -75,18 +75,21 @@ namespace ZendeskImporter
                 {
                     return users;
                 }
+                Thread.Sleep(10000);
             }
         }
 
         public IList<Comment> GetTicketComments(long ticketId)
         {
             var comments = _client.Tickets.GetTicketComments(ticketId);
+            Thread.Sleep(150);
             return comments.Comments;
         }
 
         public TicketMetric GetTicketMetrics(long ticketId)
         {
             var metrics = _client.Tickets.GetTicketMetricsForTicket(ticketId);
+            Thread.Sleep(150);
             return metrics.TicketMetric;
         }
     }

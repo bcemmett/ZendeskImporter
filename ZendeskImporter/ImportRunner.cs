@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace ZendeskImporter
 {
@@ -30,7 +29,6 @@ namespace ZendeskImporter
                     _persister.SaveTicketComments(ticket.Id.Value, comments);
                     var metrics = _api.GetTicketMetrics(ticket.Id.Value);
                     _persister.SaveTicketMetrics(ticket.Id.Value, metrics);
-                    Thread.Sleep(250);
                 }
             }
 
