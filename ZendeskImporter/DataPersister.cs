@@ -11,6 +11,13 @@ namespace ZendeskImporter
     {
         private readonly string _connectionString;
 
+        public enum ObjectType
+        {
+            User,
+            Ticket,
+            Organization
+        }
+
         public DataPersister(string connectionString)
         {
             _connectionString = connectionString;
@@ -400,6 +407,44 @@ namespace ZendeskImporter
             parameters.Add(new SqlParameter("@Name", name));
             parameters.Add(new SqlParameter("@Value", (object)value?.ToString() ?? DBNull.Value));
             RunQuery(Queries.InsertUserCustomField, parameters);
+        }
+
+        public DateTime GetPreviousHighWatermark(ObjectType objectType)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT LastImport FROM dbo.MetaImporterWatermarks WHERE Object = @Object";
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Object", objectType.ToString());
+                    conn.Open();
+                    var result = cmd.ExecuteScalar();
+                    if (result == null || result == DBNull.Value)
+                    {
+                        return DateTime.MinValue;
+                    }
+
+                    DateTime previousWatermark = (DateTime) result;
+                    return DateTime.SpecifyKind(previousWatermark, DateTimeKind.Utc);
+                }
+            }
+        }
+
+        public void SetHighWatermark(ObjectType objectType, DateTime watermark)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                string query = @"
+                    DELETE FROM dbo.MetaImporterWatermarks WHERE Object = @Object;
+                    INSERT INTO dbo.MetaImporterWatermarks ( Object, LastImport ) VALUES ( @Object, @LastImport );";
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Object", objectType.ToString());
+                    cmd.Parameters.AddWithValue("@LastImport", watermark);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         private void RunQuery(string query, List<SqlParameter> parameters)
